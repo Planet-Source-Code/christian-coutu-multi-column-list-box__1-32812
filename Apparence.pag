@@ -1,0 +1,367 @@
+VERSION 5.00
+Begin VB.PropertyPage Apparence 
+   Caption         =   "Apparence"
+   ClientHeight    =   3495
+   ClientLeft      =   0
+   ClientTop       =   0
+   ClientWidth     =   5925
+   PaletteMode     =   0  'Halftone
+   ScaleHeight     =   3495
+   ScaleWidth      =   5925
+   Begin VB.ComboBox Combo4 
+      Height          =   315
+      ItemData        =   "Apparence.pgx":0000
+      Left            =   1575
+      List            =   "Apparence.pgx":0019
+      TabIndex        =   14
+      Top             =   1575
+      Width           =   1770
+   End
+   Begin VB.ComboBox Combo3 
+      Height          =   315
+      ItemData        =   "Apparence.pgx":007A
+      Left            =   1575
+      List            =   "Apparence.pgx":0093
+      TabIndex        =   13
+      Top             =   1170
+      Width           =   1770
+   End
+   Begin VB.ComboBox Combo2 
+      Height          =   315
+      ItemData        =   "Apparence.pgx":00F4
+      Left            =   1575
+      List            =   "Apparence.pgx":010D
+      TabIndex        =   12
+      Top             =   765
+      Width           =   1770
+   End
+   Begin VB.ComboBox Combo1 
+      Height          =   315
+      ItemData        =   "Apparence.pgx":016E
+      Left            =   1575
+      List            =   "Apparence.pgx":0187
+      TabIndex        =   7
+      Top             =   360
+      Width           =   1770
+   End
+   Begin VB.PictureBox Picture1 
+      AutoRedraw      =   -1  'True
+      BackColor       =   &H00C0C0C0&
+      BorderStyle     =   0  'None
+      Height          =   2715
+      Left            =   3510
+      ScaleHeight     =   2715
+      ScaleWidth      =   2130
+      TabIndex        =   0
+      Top             =   360
+      Width           =   2130
+      Begin VB.PictureBox Picture4 
+         AutoRedraw      =   -1  'True
+         BackColor       =   &H00FFFFFF&
+         BorderStyle     =   0  'None
+         Height          =   2110
+         Left            =   30
+         ScaleHeight     =   2115
+         ScaleWidth      =   2070
+         TabIndex        =   5
+         Top             =   575
+         Width           =   2065
+         Begin VB.Label Label3 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "ListBox"
+            Height          =   195
+            Left            =   720
+            TabIndex        =   6
+            Top             =   540
+            Width           =   510
+         End
+      End
+      Begin VB.PictureBox Picture3 
+         AutoRedraw      =   -1  'True
+         BorderStyle     =   0  'None
+         Height          =   265
+         Left            =   30
+         ScaleHeight     =   270
+         ScaleWidth      =   2070
+         TabIndex        =   2
+         Top             =   305
+         Width           =   2065
+         Begin VB.Label Label2 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "Column"
+            Height          =   195
+            Left            =   720
+            TabIndex        =   4
+            Top             =   45
+            Width           =   555
+         End
+      End
+      Begin VB.PictureBox Picture2 
+         AutoRedraw      =   -1  'True
+         BorderStyle     =   0  'None
+         Height          =   265
+         Left            =   30
+         ScaleHeight     =   270
+         ScaleWidth      =   2070
+         TabIndex        =   1
+         Top             =   30
+         Width           =   2065
+         Begin VB.Label Label1 
+            Alignment       =   2  'Center
+            AutoSize        =   -1  'True
+            BackStyle       =   0  'Transparent
+            Caption         =   "Header"
+            Height          =   195
+            Left            =   720
+            TabIndex        =   3
+            Top             =   45
+            Width           =   540
+         End
+      End
+   End
+   Begin VB.Label Label7 
+      Caption         =   "Control Style:"
+      Height          =   240
+      Left            =   180
+      TabIndex        =   11
+      Top             =   1620
+      Width           =   1230
+   End
+   Begin VB.Label Label6 
+      Caption         =   "List Style:"
+      Height          =   240
+      Left            =   180
+      TabIndex        =   10
+      Top             =   1215
+      Width           =   1230
+   End
+   Begin VB.Label Label5 
+      Caption         =   "Column Style:"
+      Height          =   240
+      Left            =   180
+      TabIndex        =   9
+      Top             =   810
+      Width           =   1230
+   End
+   Begin VB.Label Label4 
+      Caption         =   "Header Style:"
+      Height          =   240
+      Left            =   180
+      TabIndex        =   8
+      Top             =   405
+      Width           =   1230
+   End
+End
+Attribute VB_Name = "Apparence"
+Attribute VB_GlobalNameSpace = False
+Attribute VB_Creatable = True
+Attribute VB_PredeclaredId = False
+Attribute VB_Exposed = True
+Option Explicit
+
+Private Enum mBorderStyle
+    mInsert
+    mRaised
+End Enum
+Private Sub Make3D(Obj As Object, BorderWidth As Double, Style As mBorderStyle, Optional LightColor As OLE_COLOR = &H80000016, Optional DarkColor As OLE_COLOR = &H80000010)
+Dim DS, DW, SM
+Dim K
+Dim x2 As Long
+Dim y2 As Long
+
+Dim pixX As Integer
+Dim pixY As Integer
+
+pixX = Screen.TwipsPerPixelX
+pixY = Screen.TwipsPerPixelY
+
+x2 = Obj.Width - pixX
+y2 = Obj.Height - pixY
+
+DS = Obj.DrawStyle
+DW = Obj.DrawWidth
+SM = Obj.ScaleMode
+
+Obj.DrawStyle = 0
+Obj.DrawWidth = 1
+Obj.ScaleMode = vbTwips
+
+BorderWidth = BorderWidth * 20
+
+If BorderWidth = 0 Then
+   BorderWidth = 50
+End If
+
+Select Case Style
+  Case 0    'Inset
+    'Upper border
+    For K = 0 To BorderWidth
+      Obj.Line (0, 0 + K)-(x2 - K, 0 + K), DarkColor
+    Next
+    
+    'Right border
+    For K = 0 To BorderWidth
+       Obj.Line (x2 - K, 0 + K)-(x2 - K, y2), LightColor
+    Next
+    
+    'Left border
+    For K = 0 To BorderWidth
+         Obj.Line (0 + K, 0)-(0 + K, y2 - K), DarkColor
+    Next
+    
+    'Bottom border
+    For K = 0 To BorderWidth
+      Obj.Line (0 + K, y2 - K)-(x2, y2 - K), LightColor
+    Next
+  Case 1    'Raised
+    'Upper border
+    For K = 0 To BorderWidth
+      Obj.Line (0, 0 + K)-(x2 - K, 0 + K), LightColor
+    Next
+    
+    'Right border
+    For K = 0 To BorderWidth
+       Obj.Line (x2 - K, 0 + K)-(x2 - K, y2), DarkColor
+    Next
+    
+    'Left border
+    For K = 0 To BorderWidth
+         Obj.Line (0 + K, 0)-(0 + K, y2 - K), LightColor
+    Next
+    
+    'Bottom border
+    For K = 0 To BorderWidth
+      Obj.Line (0 + K, y2 - K)-(x2, y2 - K), DarkColor
+    Next
+
+End Select
+
+Obj.DrawStyle = DS          'restore the settings
+Obj.DrawWidth = DW
+Obj.ScaleMode = SM
+
+End Sub
+
+
+Private Sub Combo1_Click()
+Changed = True
+Picture2.Cls
+Select Case Combo1.ListIndex
+Case 0
+
+Case 1
+Make3D Picture2, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+Case 2
+Make3D Picture2, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 3
+Make3D Picture2, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Case 4
+Make3D Picture2, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Case 5
+Make3D Picture2, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Make3D Picture2, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 6
+Make3D Picture2, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Make3D Picture2, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+End Select
+End Sub
+
+
+Private Sub Combo2_Click()
+Changed = True
+Picture3.Cls
+Select Case Combo2.ListIndex
+Case 0
+
+Case 1
+Make3D Picture3, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+Case 2
+Make3D Picture3, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 3
+Make3D Picture3, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Case 4
+Make3D Picture3, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Case 5
+Make3D Picture3, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Make3D Picture3, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 6
+Make3D Picture3, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Make3D Picture3, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+End Select
+End Sub
+
+
+Private Sub Combo3_Click()
+Changed = True
+Picture4.Cls
+Select Case Combo3.ListIndex
+Case 0
+
+Case 1
+Make3D Picture4, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+Case 2
+Make3D Picture4, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 3
+Make3D Picture4, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Case 4
+Make3D Picture4, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Case 5
+Make3D Picture4, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Make3D Picture4, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 6
+Make3D Picture4, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Make3D Picture4, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+End Select
+End Sub
+
+
+Private Sub Combo4_Click()
+Changed = True
+Picture1.Cls
+Select Case Combo4.ListIndex
+Case 0
+
+Case 1
+Make3D Picture1, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+Case 2
+Make3D Picture1, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 3
+Make3D Picture1, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Case 4
+Make3D Picture1, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Case 5
+Make3D Picture1, 0.8, mInsert, &HFEFEFE, &HA0A0A0
+Make3D Picture1, 0.3, mRaised, &HFEFEFE, &HA0A0A0
+Case 6
+Make3D Picture1, 0.8, mRaised, &HFEFEFE, &HA0A0A0
+Make3D Picture1, 0.3, mInsert, &HFEFEFE, &HA0A0A0
+End Select
+End Sub
+
+
+Private Sub PropertyPage_ApplyChanges()
+SelectedControls(0).HeaderBorder = Combo1.ListIndex
+SelectedControls(0).ColumnBorder = Combo2.ListIndex
+SelectedControls(0).ListBorder = Combo3.ListIndex
+SelectedControls(0).ControlBorder = Combo4.ListIndex
+End Sub
+
+Private Sub PropertyPage_Initialize()
+Combo1_Click
+Combo2_Click
+Combo3_Click
+Combo4_Click
+End Sub
+
+Private Sub PropertyPage_SelectionChanged()
+Combo1.ListIndex = SelectedControls(0).HeaderBorder
+Combo2.ListIndex = SelectedControls(0).ColumnBorder
+Combo3.ListIndex = SelectedControls(0).ListBorder
+Combo4.ListIndex = SelectedControls(0).ControlBorder
+End Sub
+
+
